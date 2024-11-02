@@ -1,0 +1,57 @@
+version: '3.8'
+
+services:
+  redis-node-1:
+    image: redis:latest
+    container_name: redis-node-1
+    command: redis-server /usr/local/etc/redis/redis.conf
+    volumes:
+      - ./redis-node-1.conf:/usr/local/etc/redis/redis.conf
+      - redis-node-1-data:/data
+    ports:
+      - "6379:6379"
+      - "16379:16379"
+    networks:
+      redis-net:
+        ipv4_address: 192.168.10.2
+
+  redis-node-2:
+    image: redis:latest
+    container_name: redis-node-2
+    command: redis-server /usr/local/etc/redis/redis.conf
+    volumes:
+      - ./redis-node-2.conf:/usr/local/etc/redis/redis.conf
+      - redis-node-2-data:/data
+    ports:
+      - "6380:6379"
+      - "16380:16379"
+    networks:
+      redis-net:
+        ipv4_address: 192.168.10.3
+
+  redis-node-3:
+    image: redis:latest
+    container_name: redis-node-3
+    command: redis-server /usr/local/etc/redis/redis.conf
+    volumes:
+      - ./redis-node-3.conf:/usr/local/etc/redis/redis.conf
+      - redis-node-3-data:/data
+    ports:
+      - "6381:6379"
+      - "16381:16379"
+    networks:
+      redis-net:
+        ipv4_address: 192.168.10.4
+
+networks:
+  redis-net:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 192.168.10.0/24
+
+volumes:
+  redis-node-1-data:
+  redis-node-2-data:
+  redis-node-3-data:
